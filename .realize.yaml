@@ -1,0 +1,23 @@
+settings:
+  legacy:
+    force: false
+    interval: 0s
+schema:
+- name: NAS-server
+  path: .
+  commands:
+    install:
+      status: true
+      method: go build -o ./built/binary
+    run:
+      status: true
+      method: ./built/binary
+  watcher:
+    extensions:
+    - go
+    paths:
+    - /
+    ignored_paths:
+    - .git
+    - .realize
+    - vendor
