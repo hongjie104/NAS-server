@@ -1,16 +1,28 @@
 package v1
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/hongjie104/NAS-server/app/models"
-	response "github.com/hongjie104/NAS-server/app/pkg/app"
+	response "github.com/hongjie104/NAS-server/app/routers/response"
 )
 
-// IndexAcctress 获取女演员列表
-func IndexAcctress(c *gin.Context) {
+// IndexActress 获取女演员列表
+func IndexActress(c *gin.Context) {
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+	actress := models.IndexActress(page, pageSize)
 	response := response.Gin{C: c}
-	acctress := models.Index(1, 10)
-	response.Success(acctress)
+	response.Success(actress)
+}
+
+// ShowActress a
+func ShowActress(c *gin.Context) {
+	id := c.Param("id")
+	actress := models.ShowActress(id)
+	response := response.Gin{C: c}
+	response.Success(actress)
 }
 
 // // AddTag 新增文章标签

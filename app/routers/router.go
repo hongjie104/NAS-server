@@ -24,7 +24,8 @@ func InitRouter() *gin.Engine {
 	apiV1 := r.Group("/api/v1")
 	// apiV1.Use(jwt.JWT())
 	{
-		apiV1.GET("/acctress", v1.IndexAcctress)
+		apiV1.GET("/actress", v1.IndexActress)
+		apiV1.GET("/actress/:id", v1.ShowActress)
 		// apiV1.GET("/test/:id", v1.Test)
 
 		apiV1.GET("/user/currentUser", v1.GetUser)

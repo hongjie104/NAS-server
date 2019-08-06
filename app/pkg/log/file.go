@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	LogSavePath = "runtime/logs/"
+	// LogSavePath log路径
+	LogSavePath = "logs/"
 	LogSaveName = "log"
 	LogFileExt  = "log"
 	TimeFormat  = "20060102"

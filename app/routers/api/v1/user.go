@@ -4,8 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hongjie104/NAS-server/app/pkg/e"
 	"github.com/hongjie104/NAS-server/app/pkg/utils"
-
-	response "github.com/hongjie104/NAS-server/app/pkg/app"
+	response "github.com/hongjie104/NAS-server/app/routers/response"
 )
 
 // GetUser a

@@ -2,10 +2,10 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	response "github.com/hongjie104/NAS-server/app/pkg/app"
 	"github.com/hongjie104/NAS-server/app/pkg/e"
 	"github.com/hongjie104/NAS-server/app/pkg/log"
 	"github.com/hongjie104/NAS-server/app/pkg/utils"
+	response "github.com/hongjie104/NAS-server/app/routers/response"
 )
 
 // Test a
