@@ -26,7 +26,7 @@ func main() {
 	endless.DefaultReadTimeOut = 10 * time.Second
 	endless.DefaultWriteTimeOut = 10 * time.Second
 	endless.DefaultMaxHeaderBytes = 1 << 20
-	endPoint := fmt.Sprintf("%s", setting.HTTPPort)
+	endPoint := fmt.Sprintf("%s", setting.Config.Server.HTTPPort)
 
 	server := endless.NewServer(endPoint, routers.InitRouter())
 	server.BeforeBegin = func(add string) {

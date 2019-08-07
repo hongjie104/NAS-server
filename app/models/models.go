@@ -27,12 +27,12 @@ func (s *SessionStore) Close() {
 
 // C a
 func (s *SessionStore) C(name string) *mgo.Collection {
-	return s.session.DB(setting.DbName).C(name)
+	return s.session.DB(setting.Config.Database.DB).C(name)
 }
 
 func init() {
 	var err error
-	session, err = mgo.Dial(setting.DbHost)
+	session, err = mgo.Dial(setting.Config.Database.HOST)
 	if err != nil {
 		panic(err)
 	} else {

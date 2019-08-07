@@ -7,7 +7,7 @@ import (
 	"github.com/hongjie104/NAS-server/app/pkg/setting"
 )
 
-var jwtSecret = []byte(setting.JwtSecret)
+var jwtSecret = []byte(setting.Config.APP.JwtSecret)
 
 // Claims a
 type Claims struct {
