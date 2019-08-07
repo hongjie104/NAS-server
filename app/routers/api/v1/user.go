@@ -4,12 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hongjie104/NAS-server/app/pkg/e"
 	"github.com/hongjie104/NAS-server/app/pkg/utils"
-	response "github.com/hongjie104/NAS-server/app/routers/response"
+	"github.com/hongjie104/NAS-server/app/routers/api"
 )
 
 // GetUser a
 func GetUser(c *gin.Context) {
-	response := response.Gin{C: c}
+	response := api.Gin{C: c}
 	response.Success(gin.H{
 		"name":   "鸿杰",
 		"avatar": "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
@@ -25,7 +25,7 @@ type LoginData struct {
 
 // Login a
 func Login(c *gin.Context) {
-	response := response.Gin{C: c}
+	response := api.Gin{C: c}
 	var loginData LoginData
 	if err := c.BindJSON(&loginData); err == nil {
 		if loginData.User == "admin" && loginData.Password == "123" {

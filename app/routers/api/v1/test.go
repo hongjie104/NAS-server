@@ -5,7 +5,7 @@ import (
 	"github.com/hongjie104/NAS-server/app/pkg/e"
 	"github.com/hongjie104/NAS-server/app/pkg/log"
 	"github.com/hongjie104/NAS-server/app/pkg/utils"
-	response "github.com/hongjie104/NAS-server/app/routers/response"
+	"github.com/hongjie104/NAS-server/app/routers/api"
 )
 
 // Test a
@@ -14,7 +14,7 @@ func Test(c *gin.Context) {
 	// c.JSON(http.StatusOK, gin.H{"test": true, "data": token})
 	// id := com.StrTo(c.Param("id")).MustInt()
 	id := 3630
-	response := response.Gin{C: c}
+	response := api.Gin{C: c}
 	t, err := utils.ParseToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbSIsInBhc3N3b3JkIjoiMTIzIiwiZXhwIjoxNTY0MjI3NzQ1LCJpc3MiOiJsZWFybi1nbyJ9.67I3ccNeCPRheTc-YoUnPeZwTXNb6u2d8dLIqktAQT0")
 	if err == nil {
 		response.Success(gin.H{"test": true, "data": t.Password})
