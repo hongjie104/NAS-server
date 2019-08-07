@@ -16,7 +16,7 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(setting.RunMode)
 
 	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "pong", "success": true})
+		c.JSON(http.StatusOK, gin.H{"data": "pong", "success": true})
 	})
 
 	r.POST("/api/v1/login", v1.Login)
@@ -24,8 +24,9 @@ func InitRouter() *gin.Engine {
 	apiV1 := r.Group("/api/v1")
 	// apiV1.Use(jwt.JWT())
 	{
-		apiV1.GET("/actress", v1.IndexActress)
-		apiV1.GET("/actress/:id", v1.ShowActress)
+		actressController := &v1.ActressController{}
+		apiV1.GET("/actress", actressController.Index)
+		apiV1.GET("/actress/:id", actressController.Show)
 		// apiV1.GET("/test/:id", v1.Test)
 
 		apiV1.GET("/user/currentUser", v1.GetUser)

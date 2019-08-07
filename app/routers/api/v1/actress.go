@@ -8,31 +8,24 @@ import (
 	response "github.com/hongjie104/NAS-server/app/routers/response"
 )
 
-// IndexActress 获取女演员列表
-func IndexActress(c *gin.Context) {
+var model = &models.ActressModel{}
+
+// ActressController ActressController
+type ActressController struct{}
+
+// Index 获取女演员列表
+func (controller ActressController) Index(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
-	actress := models.IndexActress(page, pageSize)
+	actress := model.Index(page, pageSize)
 	response := response.Gin{C: c}
 	response.Success(actress)
 }
 
-// ShowActress a
-func ShowActress(c *gin.Context) {
+// Show a
+func (controller ActressController) Show(c *gin.Context) {
 	id := c.Param("id")
-	actress := models.ShowActress(id)
+	actress := model.Show(id)
 	response := response.Gin{C: c}
 	response.Success(actress)
 }
-
-// // AddTag 新增文章标签
-// func AddTag(c *gin.Context) {
-// }
-
-// // EditTag 修改文章标签
-// func EditTag(c *gin.Context) {
-// }
-
-// // DeleteTag 删除文章标签
-// func DeleteTag(c *gin.Context) {
-// }
