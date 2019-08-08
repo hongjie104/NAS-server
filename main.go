@@ -23,6 +23,7 @@ func main() {
 	// }
 	// s.ListenAndServe()
 
+	// /*
 	endless.DefaultReadTimeOut = 10 * time.Second
 	endless.DefaultWriteTimeOut = 10 * time.Second
 	endless.DefaultMaxHeaderBytes = 1 << 20
@@ -37,4 +38,5 @@ func main() {
 	if err != nil {
 		log.Printf("Server err: %v", err)
 	}
+	//*/
 }
