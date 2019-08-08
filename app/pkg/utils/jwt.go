@@ -4,10 +4,10 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/hongjie104/NAS-server/app/pkg/setting"
+	"github.com/hongjie104/NAS-server/app/pkg/config"
 )
 
-var jwtSecret = []byte(setting.Config.APP.JwtSecret)
+var jwtSecret = []byte(config.Config.APP.JwtSecret)
 
 // Claims a
 type Claims struct {

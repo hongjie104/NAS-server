@@ -14,7 +14,7 @@ var model = &models.ActressModel{}
 type ActressController struct{}
 
 // Index 获取女演员列表
-func (controller ActressController) Index(c *gin.Context) {
+func (controller *ActressController) Index(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
 	actress := model.Index(page, pageSize)
@@ -23,7 +23,7 @@ func (controller ActressController) Index(c *gin.Context) {
 }
 
 // Show a
-func (controller ActressController) Show(c *gin.Context) {
+func (controller *ActressController) Show(c *gin.Context) {
 	id := c.Param("id")
 	actress := model.Show(id)
 	response := api.Gin{C: c}

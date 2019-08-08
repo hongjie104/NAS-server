@@ -23,7 +23,7 @@ type ActressData struct {
 }
 
 // Index 获取女演员列表
-func (m ActressModel) Index(page int, pageSize int) (actresses []ActressListData) {
+func (m *ActressModel) Index(page int, pageSize int) (actresses []ActressListData) {
 	ds := NewSessionStore()
 	defer ds.Close()
 	ds.C("actress").Find(nil).Select(bson.M{"_id": 1, "alias": 1}).Skip((page - 1) * pageSize).Limit(pageSize).All(&actresses)
@@ -31,7 +31,7 @@ func (m ActressModel) Index(page int, pageSize int) (actresses []ActressListData
 }
 
 // Show a
-func (m ActressModel) Show(id string) (actress ActressData) {
+func (m *ActressModel) Show(id string) (actress ActressData) {
 	if bson.IsObjectIdHex(id) {
 		_id := bson.ObjectIdHex(id)
 		ds := NewSessionStore()

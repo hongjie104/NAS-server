@@ -1,4 +1,4 @@
-package setting
+package config
 
 import (
 	"io/ioutil"
@@ -13,6 +13,7 @@ type appConf struct {
 }
 
 type serverConf struct {
+	RunMode      string `yaml:"run_mode"`
 	HTTPPort     string `yaml:"http_port"`
 	ReadTimeout  int    `yaml:"read_timeout"`
 	WriteTimeout int    `yaml:"write_timeout"`
@@ -25,8 +26,6 @@ type databaseConf struct {
 
 // Conf Conf
 type Conf struct {
-	RunMode string `yaml:"run_mode"`
-
 	APP appConf `yaml:"app"`
 
 	Server serverConf `yaml:"server"`

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/fvbock/endless"
-	"github.com/hongjie104/NAS-server/app/pkg/setting"
+	"github.com/hongjie104/NAS-server/app/pkg/config"
 	"github.com/hongjie104/NAS-server/app/routers"
 )
 
@@ -26,7 +26,7 @@ func main() {
 	endless.DefaultReadTimeOut = 10 * time.Second
 	endless.DefaultWriteTimeOut = 10 * time.Second
 	endless.DefaultMaxHeaderBytes = 1 << 20
-	endPoint := fmt.Sprintf("%s", setting.Config.Server.HTTPPort)
+	endPoint := fmt.Sprintf("%s", config.Config.Server.HTTPPort)
 
 	server := endless.NewServer(endPoint, routers.InitRouter())
 	server.BeforeBegin = func(add string) {

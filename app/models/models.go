@@ -3,7 +3,7 @@ package models
 import (
 	"fmt"
 
-	"github.com/hongjie104/NAS-server/app/pkg/setting"
+	"github.com/hongjie104/NAS-server/app/pkg/config"
 	"gopkg.in/mgo.v2"
 )
 
@@ -27,12 +27,12 @@ func (s *SessionStore) Close() {
 
 // C a
 func (s *SessionStore) C(name string) *mgo.Collection {
-	return s.session.DB(setting.Config.Database.DB).C(name)
+	return s.session.DB(config.Config.Database.DB).C(name)
 }
 
 func init() {
 	var err error
-	session, err = mgo.Dial(setting.Config.Database.HOST)
+	session, err = mgo.Dial(config.Config.Database.HOST)
 	if err != nil {
 		panic(err)
 	} else {
