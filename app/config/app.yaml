@@ -10,5 +10,6 @@ server:
 
 database:
   type: mongo
-  host: 118.31.64.23:27017
+  # host: 118.31.64.23:27017
+  host: 127.0.0.1:27017
   db: NAS

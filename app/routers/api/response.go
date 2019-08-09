@@ -14,10 +14,16 @@ type Gin struct {
 
 // Success a
 func (g *Gin) Success(data interface{}) {
-	g.C.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"data":    data,
-	})
+	if data == nil {
+		g.C.JSON(http.StatusOK, gin.H{
+			"success": true,
+		})
+	} else {
+		g.C.JSON(http.StatusOK, gin.H{
+			"success": true,
+			"data":    data,
+		})
+	}
 }
 
 // Fail a

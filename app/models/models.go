@@ -9,12 +9,6 @@ import (
 
 var session *mgo.Session
 
-// Model a
-type Model struct {
-	CreatedAt  int `bson:"createAt"`
-	ModifiedAt int `bson:"modifiedAt"`
-}
-
 // SessionStore a
 type SessionStore struct {
 	session *mgo.Session

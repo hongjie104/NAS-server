@@ -27,6 +27,7 @@ func InitRouter() *gin.Engine {
 		actressController := &v1.ActressController{}
 		apiV1.GET("/actress", actressController.Index)
 		apiV1.GET("/actress/:id", actressController.Show)
+		apiV1.PUT("/actress/:id", actressController.Update)
 		// apiV1.GET("/test/:id", v1.Test)
 
 		apiV1.GET("/user/currentUser", v1.GetUser)
