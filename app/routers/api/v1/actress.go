@@ -9,7 +9,7 @@ import (
 	"github.com/hongjie104/NAS-server/app/routers/api"
 )
 
-var model = &models.ActressModel{}
+var actressModel = &models.ActressModel{}
 
 // ActressController ActressController
 type ActressController struct{}
@@ -18,7 +18,7 @@ type ActressController struct{}
 func (ctl *ActressController) Index(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
-	actress := model.Index(page, pageSize)
+	actress := actressModel.Index(page, pageSize)
 	response := api.Gin{C: c}
 	response.Success(actress)
 }
@@ -26,7 +26,7 @@ func (ctl *ActressController) Index(c *gin.Context) {
 // Show a
 func (ctl *ActressController) Show(c *gin.Context) {
 	id := c.Param("id")
-	actress := model.Show(id)
+	actress := actressModel.Show(id)
 	response := api.Gin{C: c}
 	response.Success(actress)
 }

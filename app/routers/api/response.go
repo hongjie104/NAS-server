@@ -30,7 +30,7 @@ func (g *Gin) Success(data interface{}) {
 func (g *Gin) Fail(errCode int) {
 	g.C.JSON(http.StatusOK, gin.H{
 		"success": false,
-		"errCode": errCode,
-		"errMsg":  e.GetMsg(errCode),
+		"code":    errCode,
+		"msg":     e.GetMsg(errCode),
 	})
 }

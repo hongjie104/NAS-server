@@ -12,18 +12,18 @@ var jwtSecret = []byte(config.Config.APP.JwtSecret)
 // Claims a
 type Claims struct {
 	UserName string `json:"username"`
-	Password string `json:"password"`
+	ID       string `json:"id"`
 	jwt.StandardClaims
 }
 
 // GenerateToken a
-func GenerateToken(username, password string) (string, error) {
+func GenerateToken(username, id string) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
 
 	claims := Claims{
 		username,
-		password,
+		id,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "learn-go",

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hongjie104/NAS-server/app/middleware"
 	"github.com/hongjie104/NAS-server/app/pkg/config"
 	v1 "github.com/hongjie104/NAS-server/app/routers/api/v1"
 )
@@ -15,14 +16,14 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 	gin.SetMode(config.Config.Server.RunMode)
 
-	r.GET("/ping", func(c *gin.Context) {
+	r.GET("/api/v1/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"data": "pong", "success": true})
 	})
 
 	r.POST("/api/v1/login", v1.Login)
 
 	apiV1 := r.Group("/api/v1")
-	// apiV1.Use(jwt.JWT())
+	apiV1.Use(middleware.JWT())
 	{
 		actressController := &v1.ActressController{}
 		apiV1.GET("/actress", actressController.Index)

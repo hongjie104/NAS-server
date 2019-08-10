@@ -17,7 +17,7 @@ func Test(c *gin.Context) {
 	response := api.Gin{C: c}
 	t, err := utils.ParseToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbSIsInBhc3N3b3JkIjoiMTIzIiwiZXhwIjoxNTY0MjI3NzQ1LCJpc3MiOiJsZWFybi1nbyJ9.67I3ccNeCPRheTc-YoUnPeZwTXNb6u2d8dLIqktAQT0")
 	if err == nil {
-		response.Success(gin.H{"test": true, "data": t.Password})
+		response.Success(gin.H{"test": true, "data": t.ID})
 	} else {
 		log.LogError(err)
 		// c.JSON(http.StatusOK, gin.H{"success": false, "data": nil})
