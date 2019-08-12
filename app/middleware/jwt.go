@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/hongjie104/NAS-server/app/pkg/log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/hongjie104/NAS-server/app/pkg/e"
 	"github.com/hongjie104/NAS-server/app/pkg/utils"
@@ -24,6 +26,7 @@ func JWT() gin.HandlerFunc {
 			claims, err = utils.ParseToken(token)
 			if err != nil {
 				code = e.ErrorAuthCheckTokenFail
+				log.LogDebug("====", token)
 			} else if time.Now().Unix() > claims.ExpiresAt {
 				code = e.ErrorAuthCheckTokenTimeout
 			}

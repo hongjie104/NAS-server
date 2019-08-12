@@ -10,35 +10,33 @@ import (
 	"github.com/hongjie104/NAS-server/app/routers/api"
 )
 
-var actressModel = &models.ActressModel{}
+var videoModel = &models.VideoModel{}
 
-// ActressController ActressController
-type ActressController struct{}
+// VideoController VideoController
+type VideoController struct{}
 
 // Index 获取女演员列表
-func (ctl *ActressController) Index(c *gin.Context) {
+func (ctl *VideoController) Index(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", strconv.Itoa(config.Config.APP.PageSize)))
-	name := c.DefaultQuery("name", "")
-	sortBy := c.DefaultQuery("sortBy", "")
-	actress, total := actressModel.Index(page, pageSize, name, sortBy)
+	video, total := videoModel.Index(page, pageSize)
 	response := api.Gin{C: c}
 	response.Success(gin.H{
-		"list":  actress,
+		"list":  video,
 		"total": total,
 	})
 }
 
 // Show a
-func (ctl *ActressController) Show(c *gin.Context) {
+func (ctl *VideoController) Show(c *gin.Context) {
 	id := c.Param("id")
-	actress := actressModel.Show(id)
+	video := videoModel.Show(id)
 	response := api.Gin{C: c}
-	response.Success(actress)
+	response.Success(video)
 }
 
 // Update Update
-func (ctl *ActressController) Update(c *gin.Context) {
+func (ctl *VideoController) Update(c *gin.Context) {
 	// 田嶋涼子
 	type UpdateData struct {
 		Name string `json:"name" binding:"required"`

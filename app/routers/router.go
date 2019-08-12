@@ -31,6 +31,11 @@ func InitRouter() *gin.Engine {
 		apiV1.PUT("/actress/:id", actressController.Update)
 		// apiV1.GET("/test/:id", v1.Test)
 
+		videoController := &v1.VideoController{}
+		apiV1.GET("/video", videoController.Index)
+		apiV1.GET("/video/:id", videoController.Show)
+		apiV1.PUT("/video/:id", videoController.Update)
+
 		apiV1.GET("/user/currentUser", v1.GetUser)
 	}
 

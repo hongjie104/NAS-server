@@ -8,7 +8,7 @@ import (
 )
 
 type appConf struct {
-	PageSize  int8   `yaml:"page_size"`
+	PageSize  int    `yaml:"page_size"`
 	JwtSecret string `yaml:"jwt_secret"`
 }
 

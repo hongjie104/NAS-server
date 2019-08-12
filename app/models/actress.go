@@ -15,10 +15,26 @@ type ActressModel struct {
 }
 
 // Index 获取女演员列表
-func (m *ActressModel) Index(page int, pageSize int) (actresses []ActressModel) {
+func (m *ActressModel) Index(page, pageSize int, name, sortBy string) (actresses []ActressModel, total int) {
 	ds := NewSessionStore()
 	defer ds.Close()
-	ds.C("actress").Find(nil).Select(bson.M{"_id": 1, "name": 1, "alias": 1}).Skip((page - 1) * pageSize).Limit(pageSize).All(&actresses)
+	var condition interface{}
+	if name != "" {
+		reg := bson.M{"$regex": name, "$options": "$i"}
+		condition = bson.M{"$or": []bson.M{bson.M{"name": reg}, bson.M{"alias": reg}}}
+	}
+	sort := ""
+	switch sortBy {
+	case "score-desc":
+		sort = "-score"
+	}
+	q := ds.C("actress").Find(condition)
+	total, _ = q.Count()
+	q = q.Select(bson.M{"_id": 1, "name": 1, "alias": 1}).Skip((page - 1) * pageSize).Limit(pageSize)
+	if sort != "" {
+		q = q.Sort(sort)
+	}
+	q.All(&actresses)
 	return
 }
 
