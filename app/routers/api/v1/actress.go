@@ -10,7 +10,8 @@ import (
 	"github.com/hongjie104/NAS-server/app/routers/api"
 )
 
-var actressModel = &models.ActressModel{}
+// ActressModel ActressModel
+var ActressModel = &models.ActressModel{}
 
 // ActressController ActressController
 type ActressController struct{}
@@ -21,7 +22,12 @@ func (ctl *ActressController) Index(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", strconv.Itoa(config.Config.APP.PageSize)))
 	name := c.DefaultQuery("name", "")
 	sortBy := c.DefaultQuery("sortBy", "")
-	actress, total := actressModel.Index(page, pageSize, name, sortBy)
+	actress, total := ActressModel.Index(models.ActressIndexOption{
+		Page:     page,
+		PageSize: pageSize,
+		Name:     name,
+		SortBy:   sortBy,
+	})
 	response := api.Gin{C: c}
 	response.Success(gin.H{
 		"list":  actress,
@@ -32,9 +38,9 @@ func (ctl *ActressController) Index(c *gin.Context) {
 // Show a
 func (ctl *ActressController) Show(c *gin.Context) {
 	id := c.Param("id")
-	actress := actressModel.Show(id)
+	actress := ActressModel.Show(id)
 	response := api.Gin{C: c}
-	response.Success(actress)
+	response.Success(gin.H{"detail": actress})
 }
 
 // Update Update

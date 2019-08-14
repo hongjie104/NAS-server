@@ -1,6 +1,10 @@
 package utils
 
-import "strings"
+import (
+	"strings"
+
+	"gopkg.in/mgo.v2/bson"
+)
 
 // SubCn 将字符串 s 从 sub 子串开始截取 len 个字节，支持中文
 // 1. 获取子串位置
@@ -15,4 +19,13 @@ func SubCn(s, sub string, len int) (string, bool) {
 		return string(sRune), true
 	}
 	return "", false
+}
+
+// toObjectId toObjectId
+func ToObjectId(val string) bson.ObjectId {
+	var id bson.ObjectId
+	if bson.IsObjectIdHex(val) {
+		id = bson.ObjectIdHex(val)
+	}
+	return id
 }

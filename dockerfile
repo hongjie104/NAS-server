@@ -14,11 +14,11 @@ RUN apk update \
     # 这个是设置默认时区
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone
-COPY app/config/app.ini /home/go/app/config/
+COPY app/config/app.yaml /home/go/app/config/
 COPY main /home/go/
 
 # 暴露容器内部端口
-EXPOSE 7002
+EXPOSE 7001
 
 # 最后设定一个工作目录，这个可以自己定
 WORKDIR /home/go

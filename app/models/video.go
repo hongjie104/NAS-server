@@ -3,53 +3,65 @@ package models
 import (
 	"time"
 
+	"github.com/hongjie104/NAS-server/app/pkg/utils"
 	"gopkg.in/mgo.v2/bson"
 )
 
 // VideoModel VideoModel
 type VideoModel struct {
-	ID         bson.ObjectId `bson:"_id,omitempty" json:"id"`
-	Code       string        `bson:"code" json:"code"`
-	Name       string        `bson:"name" json:"name"`
-	Date       *time.Time    `bson:"date" json:"date"`
-	Downloaded bool          `bson:"hasDownload" json:"hasDownload"`
-	Score      int           `bson:"score" json:"score"`
-
-	// 	{
-	//     "category" : [
-	//         ObjectId("e598880130ba5c943a060000"),
-	//         ObjectId("9ad18c0130ba5cbc358d0100"),
-	//         ObjectId("98658c0130ba5cbc351a0000")
-	//     ],
-	//     "series" : ObjectId("5a9bf7de77480a3114e4ece5"),
-	//     "actress" : [
-	//         ObjectId("5a913ddb77480a35c0710331"),
-	//         ObjectId("5a91390d77480a35c0710139")
-	//     ],
-	//     "score" : 0,
+	ID         bson.ObjectId   `bson:"_id,omitempty" json:"id"`
+	Code       string          `bson:"code,omitempty" json:"code,omitempty"`
+	Name       string          `bson:"name,omitempty" json:"name,omitempty"`
+	Date       *time.Time      `bson:"date,omitempty" json:"date,omitempty"`
+	Downloaded bool            `bson:"hasDownload,omitempty" json:"hasDownload,omitempty"`
+	Score      int             `bson:"score,omitempty" json:"score,omitempty"`
+	Actress    []bson.ObjectId `bson:"actress,omitempty" json:"actress,omitempty"`
+	Series     bson.ObjectId   `bson:"series,omitempty" json:"series,omitempty"`
+	Category   []bson.ObjectId `bson:"category,omitempty" json:"category,omitempty"`
 	//     "hasDownload" : false,
-	// }
+}
+
+// VideoIndexOption VideoIndexOption
+type VideoIndexOption struct {
+	Page      int
+	PageSize  int
+	Code      string
+	ActressID bson.ObjectId
 }
 
 // Index 获取影片列表
-func (m *VideoModel) Index(page int, pageSize int) (videoList []VideoModel, total int) {
+func (m *VideoModel) Index(option VideoIndexOption) (videoList []VideoModel, total int) {
 	ds := NewSessionStore()
 	defer ds.Close()
-	ds.C("video").Find(nil).Select(bson.M{"_id": 1, "name": 1, "code": 1, "date": 1}).Skip((page - 1) * pageSize).Limit(pageSize).All(&videoList)
-	total, _ = ds.C("video").Count()
+
+	condition := bson.M{}
+
+	if option.ActressID != "" {
+		condition["actress"] = option.ActressID
+	}
+	if option.Code != "" {
+		condition["code"] = bson.M{"$regex": option.Code, "$options": "$i"}
+	}
+
+	selector := bson.M{"_id": 1, "name": 1, "code": 1, "date": 1}
+
+	q := ds.C("video").Find(condition).Select(selector)
+	total, _ = q.Count()
+
+	if option.Page > 0 && option.PageSize > 0 {
+		q = q.Skip((option.Page - 1) * option.PageSize).Limit(option.PageSize)
+	}
+	q.All(&videoList)
 	return
 }
 
 // Show a
 func (m *VideoModel) Show(id string) (video VideoModel) {
-	// if bson.IsObjectIdHex(id) {
-	_id := bson.ObjectIdHex(id)
+	_id := utils.ToObjectId(id)
 	ds := NewSessionStore()
 	defer ds.Close()
 	ds.C("video").FindId(_id).One(&video)
 	return
-	// }
-	// return
 }
 
 // Update Update

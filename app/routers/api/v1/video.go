@@ -7,19 +7,28 @@ import (
 	"github.com/hongjie104/NAS-server/app/models"
 	"github.com/hongjie104/NAS-server/app/pkg/config"
 	"github.com/hongjie104/NAS-server/app/pkg/e"
+	"github.com/hongjie104/NAS-server/app/pkg/utils"
 	"github.com/hongjie104/NAS-server/app/routers/api"
 )
 
-var videoModel = &models.VideoModel{}
+// VideoModel VideoModel
+var VideoModel = &models.VideoModel{}
+
+var categoryModel = &models.CategoryModel{}
 
 // VideoController VideoController
 type VideoController struct{}
 
-// Index 获取女演员列表
+// Index 获取影片列表
 func (ctl *VideoController) Index(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", strconv.Itoa(config.Config.APP.PageSize)))
-	video, total := videoModel.Index(page, pageSize)
+	video, total := VideoModel.Index(models.VideoIndexOption{
+		Page:      page,
+		PageSize:  pageSize,
+		ActressID: utils.ToObjectId(c.DefaultQuery("actressId", "")),
+		Code:      c.DefaultQuery("code", ""),
+	})
 	response := api.Gin{C: c}
 	response.Success(gin.H{
 		"list":  video,
@@ -30,9 +39,24 @@ func (ctl *VideoController) Index(c *gin.Context) {
 // Show a
 func (ctl *VideoController) Show(c *gin.Context) {
 	id := c.Param("id")
-	video := videoModel.Show(id)
+	video := VideoModel.Show(id)
+	actress, _ := ActressModel.Index(models.ActressIndexOption{
+		ActressIDList: video.Actress,
+	})
+	video.Actress = nil
+
+	series := SeriesModel.Show(video.Series)
+	video.Series = ""
+
+	categoryArr, _ := categoryModel.Index(video.Category)
+
 	response := api.Gin{C: c}
-	response.Success(video)
+	response.Success(gin.H{
+		"video":       video,
+		"actress":     actress,
+		"series":      series,
+		"categoryArr": categoryArr,
+	})
 }
 
 // Update Update
