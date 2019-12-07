@@ -1,9 +1,9 @@
-package models
+package model
 
 import (
 	"time"
 
-	"github.com/hongjie104/NAS-server/app/pkg/utils"
+	"github.com/hongjie104/NAS-server/pkg/utils"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -18,7 +18,8 @@ type VideoModel struct {
 	Actress    []bson.ObjectId `bson:"actress,omitempty" json:"actress,omitempty"`
 	Series     bson.ObjectId   `bson:"series,omitempty" json:"series,omitempty"`
 	Category   []bson.ObjectId `bson:"category,omitempty" json:"category,omitempty"`
-	//     "hasDownload" : false,
+	Image      string          `bson:"img,omitempty" json:"img,omitempty"`
+	ImageCover string          `bson:"img_s,omitempty" json:"img_s,omitempty"`
 }
 
 // VideoIndexOption VideoIndexOption
@@ -26,7 +27,7 @@ type VideoIndexOption struct {
 	Page      int
 	PageSize  int
 	Code      string
-	ActressID bson.ObjectId
+	ActressID string
 }
 
 // Index 获取影片列表
@@ -37,13 +38,13 @@ func (m *VideoModel) Index(option VideoIndexOption) (videoList []VideoModel, tot
 	condition := bson.M{}
 
 	if option.ActressID != "" {
-		condition["actress"] = option.ActressID
+		condition["actress"], _ = utils.ToObjectID(option.ActressID)
 	}
 	if option.Code != "" {
 		condition["code"] = bson.M{"$regex": option.Code, "$options": "$i"}
 	}
 
-	selector := bson.M{"_id": 1, "name": 1, "code": 1, "date": 1}
+	selector := bson.M{"_id": 1, "name": 1, "code": 1, "date": 1, "img_s": 1}
 
 	q := ds.C("video").Find(condition).Select(selector)
 	total, _ = q.Count()
@@ -51,13 +52,13 @@ func (m *VideoModel) Index(option VideoIndexOption) (videoList []VideoModel, tot
 	if option.Page > 0 && option.PageSize > 0 {
 		q = q.Skip((option.Page - 1) * option.PageSize).Limit(option.PageSize)
 	}
-	q.All(&videoList)
+	q.Sort("-date").All(&videoList)
 	return
 }
 
 // Show a
 func (m *VideoModel) Show(id string) (video VideoModel) {
-	_id := utils.ToObjectId(id)
+	_id, _ := utils.ToObjectID(id)
 	ds := NewSessionStore()
 	defer ds.Close()
 	ds.C("video").FindId(_id).One(&video)

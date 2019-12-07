@@ -17,6 +17,7 @@ type serverConf struct {
 	HTTPPort     string `yaml:"http_port"`
 	ReadTimeout  int    `yaml:"read_timeout"`
 	WriteTimeout int    `yaml:"write_timeout"`
+	SaveInternal uint   `yaml:"save_internal"`
 }
 
 type databaseConf struct {
@@ -37,7 +38,7 @@ type Conf struct {
 var Config = &Conf{}
 
 func init() {
-	yamlFile, err := ioutil.ReadFile("app/config/app.yaml")
+	yamlFile, err := ioutil.ReadFile("config/config.yaml")
 	if err != nil {
 		log.Printf("yamlFile.Get err #%v ", err)
 	}

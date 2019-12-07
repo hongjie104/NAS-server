@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"syscall"
 	"time"
 
 	"github.com/fvbock/endless"
-	"github.com/hongjie104/NAS-server/app/pkg/config"
-	"github.com/hongjie104/NAS-server/app/routers"
+	"github.com/hongjie104/NAS-server/config"
+	"github.com/hongjie104/NAS-server/pkg/log"
+	"github.com/hongjie104/NAS-server/router"
 )
 
 func main() {
@@ -29,14 +29,29 @@ func main() {
 	endless.DefaultMaxHeaderBytes = 1 << 20
 	endPoint := fmt.Sprintf("%s", config.Config.Server.HTTPPort)
 
-	server := endless.NewServer(endPoint, routers.InitRouter())
+	server := endless.NewServer(endPoint, router.InitRouter())
 	server.BeforeBegin = func(add string) {
-		log.Printf("Actual pid is %d", syscall.Getpid())
+		log.LogInfo(fmt.Sprintf("Actual pid is %d", syscall.Getpid()))
 	}
+
+	server.SignalHooks[endless.PRE_SIGNAL][syscall.SIGTERM] = append(
+		server.SignalHooks[endless.PRE_SIGNAL][syscall.SIGTERM],
+		preSIGTERM)
+	server.SignalHooks[endless.POST_SIGNAL][syscall.SIGTERM] = append(
+		server.SignalHooks[endless.POST_SIGNAL][syscall.SIGTERM],
+		postSIGTERM)
 
 	err := server.ListenAndServe()
 	if err != nil {
-		log.Printf("Server err: %v", err)
+		log.LogError(fmt.Sprintf("Server err: %v", err))
 	}
 	//*/
+}
+
+func preSIGTERM() {
+	fmt.Println("pre SIGTERM")
+}
+
+func postSIGTERM() {
+	fmt.Println("post SIGTERM")
 }

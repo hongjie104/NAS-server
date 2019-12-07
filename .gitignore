@@ -15,3 +15,5 @@ logs/
 build/
 go.sum
 main
+
+.DS_Store

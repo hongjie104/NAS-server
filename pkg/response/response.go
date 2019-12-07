@@ -1,10 +1,9 @@
-package api
+package response
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hongjie104/NAS-server/app/pkg/e"
 )
 
 // Gin a
@@ -17,6 +16,7 @@ func (g *Gin) Success(data interface{}) {
 	if data == nil {
 		g.C.JSON(http.StatusOK, gin.H{
 			"success": true,
+			"data":    "ok",
 		})
 	} else {
 		g.C.JSON(http.StatusOK, gin.H{
@@ -27,10 +27,9 @@ func (g *Gin) Success(data interface{}) {
 }
 
 // Fail a
-func (g *Gin) Fail(errCode int) {
+func (g *Gin) Fail(err error) {
 	g.C.JSON(http.StatusOK, gin.H{
 		"success": false,
-		"code":    errCode,
-		"msg":     e.GetMsg(errCode),
+		"msg":     err.Error(),
 	})
 }

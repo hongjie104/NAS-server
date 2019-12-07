@@ -1,10 +1,9 @@
-package models
+package model
 
 import (
 	"time"
 
-	"github.com/hongjie104/NAS-server/app/pkg/utils"
-
+	"github.com/hongjie104/NAS-server/pkg/utils"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -20,6 +19,7 @@ type ActressModel struct {
 	Waist    int           `bson:"waist,omitempty" json:"waist,omitempty"`
 	Hip      int           `bson:"hip,omitempty" json:"hip,omitempty"`
 	Cup      string        `bson:"cup,omitempty" json:"cup,omitempty"`
+	Image    string        `bson:"img,omitempty" json:"img,omitempty"`
 }
 
 // ActressIndexOption ActressIndexOption
@@ -50,7 +50,7 @@ func (m *ActressModel) Index(option ActressIndexOption) (actresses []ActressMode
 		sort = "-score"
 	}
 
-	selector := bson.M{"_id": 1, "name": 1, "alias": 1, "score": 1}
+	selector := bson.M{"_id": 1, "name": 1, "alias": 1, "score": 1, "img": 1}
 	q := ds.C("actress").Find(condition).Select(selector)
 	total, _ = q.Count()
 
@@ -66,7 +66,7 @@ func (m *ActressModel) Index(option ActressIndexOption) (actresses []ActressMode
 
 // Show a
 func (m *ActressModel) Show(id string) (actress ActressModel) {
-	_id := utils.ToObjectId(id)
+	_id, _ := utils.ToObjectID(id)
 	ds := NewSessionStore()
 	defer ds.Close()
 	ds.C("actress").FindId(_id).One(&actress)

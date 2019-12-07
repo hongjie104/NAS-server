@@ -4,11 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/hongjie104/NAS-server/app/pkg/log"
-
 	"github.com/gin-gonic/gin"
-	"github.com/hongjie104/NAS-server/app/pkg/e"
-	"github.com/hongjie104/NAS-server/app/pkg/utils"
+	"github.com/hongjie104/NAS-server/pkg/utils"
 )
 
 // JWT a
@@ -16,26 +13,26 @@ func JWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var code int
 		// var data interface{}
-		code = e.Success
+		code = 200
 		token := c.GetHeader("Authorization")
+		// var claims *utils.Claims
 		var claims *utils.Claims
 		var err error
 		if token == "" {
-			code = e.InvalidParams
+			code = 401
 		} else {
 			claims, err = utils.ParseToken(token)
 			if err != nil {
-				code = e.ErrorAuthCheckTokenFail
-				log.LogDebug("====", token)
+				code = 401
 			} else if time.Now().Unix() > claims.ExpiresAt {
-				code = e.ErrorAuthCheckTokenTimeout
+				code = 401
 			}
 		}
-		if code != e.Success {
+		if code != 200 {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"success": false,
 				"code":    code,
-				"msg":     e.GetMsg(code),
+				"msg":     "jwt error",
 			})
 			c.Abort()
 			return

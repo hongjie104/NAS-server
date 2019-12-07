@@ -1,12 +1,14 @@
 app:
   page_size: 10
-  jwt_secret: 23347$040412
+  jwt_secret: PB!xzaA@1e$A
 
 server:
-  run_mode: release
+  run_mode: debug
   http_port: :7001
   read_timeout: 60
   write_timeout: 60
+  # 每5秒同步一次数据到数据库
+  save_internal: 5
 
 database:
   type: mongo

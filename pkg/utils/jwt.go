@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/hongjie104/NAS-server/app/pkg/config"
+	"github.com/hongjie104/NAS-server/config"
 )
 
 var jwtSecret = []byte(config.Config.APP.JwtSecret)
@@ -19,20 +19,18 @@ type Claims struct {
 // GenerateToken a
 func GenerateToken(username, id string) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(3 * time.Hour)
-
+	expireTime := nowTime.Add(24 * time.Hour * 365)
 	claims := Claims{
 		username,
 		id,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer:    "learn-go",
+			Issuer:    "hj",
 		},
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := tokenClaims.SignedString(jwtSecret)
-
 	return token, err
 }
 
