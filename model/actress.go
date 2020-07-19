@@ -38,7 +38,7 @@ func (m *ActressModel) Index(option ActressIndexOption) (actresses []ActressMode
 	condition := bson.M{}
 	if option.Name != "" {
 		reg := bson.M{"$regex": option.Name, "$options": "$i"}
-		condition["$or"] = []bson.M{bson.M{"name": reg}, bson.M{"alias": reg}}
+		condition["$or"] = []bson.M{{"name": reg}, {"alias": reg}}
 	}
 	if option.ActressIDList != nil {
 		condition["_id"] = bson.M{"$in": option.ActressIDList}
@@ -50,7 +50,7 @@ func (m *ActressModel) Index(option ActressIndexOption) (actresses []ActressMode
 		sort = "-score"
 	}
 
-	selector := bson.M{"_id": 1, "name": 1, "alias": 1, "score": 1, "img": 1}
+	selector := bson.M{"_id": 1, "name": 1, "alias": 1, "score": 1, "img": 1, "birthday": 1}
 	q := ds.C("actress").Find(condition).Select(selector)
 	total, _ = q.Count()
 
@@ -70,6 +70,17 @@ func (m *ActressModel) Show(id string) (actress ActressModel) {
 	ds := NewSessionStore()
 	defer ds.Close()
 	ds.C("actress").FindId(_id).One(&actress)
+	return
+}
+
+// ShowMany ShowMany
+func (m *ActressModel) ShowMany(idList []bson.ObjectId) (actress []ActressModel) {
+	if idList == nil || len(idList) < 1 {
+		return
+	}
+	ds := NewSessionStore()
+	defer ds.Close()
+	ds.C("actress").Find(bson.M{"_id": bson.M{"$in": idList}}).All(&actress)
 	return
 }
 

@@ -34,6 +34,17 @@ func (m *CategoryModel) Index(idArr []bson.ObjectId) (category []CategoryModel, 
 // 	return
 // }
 
+// ShowMany ShowMany
+func (m *CategoryModel) ShowMany(idList []bson.ObjectId) (categoryList []CategoryModel) {
+	if idList == nil || len(idList) < 1 {
+		return
+	}
+	ds := NewSessionStore()
+	defer ds.Close()
+	ds.C("category").Find(bson.M{"_id": bson.M{"$in": idList}}).All(&categoryList)
+	return
+}
+
 // // Update Update
 // func (m *CategoryModel) Update(id string, data interface{}) {
 // 	_id := bson.ObjectIdHex(id)

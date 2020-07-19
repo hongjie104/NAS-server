@@ -36,6 +36,12 @@ var ActressModelInstance *ActressModel
 // VideoModelInstance VideoModelInstance
 var VideoModelInstance *VideoModel
 
+// SeriesModelInstance SeriesModelInstance
+var SeriesModelInstance *SeriesModel
+
+// CategoryModelInstance CategoryModelInstance
+var CategoryModelInstance *CategoryModel
+
 func init() {
 	var err error
 	session, err = mgo.Dial(config.Config.Database.HOST)
@@ -51,6 +57,8 @@ func init() {
 	UserModelInstance = &UserModel{}
 	ActressModelInstance = &ActressModel{}
 	VideoModelInstance = &VideoModel{}
+	SeriesModelInstance = &SeriesModel{}
+	CategoryModelInstance = &CategoryModel{}
 }
 
 // NewSessionStore 为每一HTTP请求创建新的DataStore对象

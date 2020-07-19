@@ -32,6 +32,7 @@ func InitRouter() *gin.Engine {
 	initUserRouter(r)
 	initActressRouter(r)
 	initVideoRouter(r)
+	initSeriesRouter(r)
 
 	return r
 }

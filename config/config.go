@@ -17,7 +17,7 @@ type serverConf struct {
 	HTTPPort     string `yaml:"http_port"`
 	ReadTimeout  int    `yaml:"read_timeout"`
 	WriteTimeout int    `yaml:"write_timeout"`
-	SaveInternal uint   `yaml:"save_internal"`
+	// SaveInternal uint   `yaml:"save_internal"`
 }
 
 type databaseConf struct {

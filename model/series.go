@@ -31,6 +31,9 @@ func (m *SeriesModel) Index(page, pageSize int, name string) (series []SeriesMod
 
 // Show a
 func (m *SeriesModel) Show(id bson.ObjectId) (series SeriesModel) {
+	if id == "" {
+		return
+	}
 	ds := NewSessionStore()
 	defer ds.Close()
 	ds.C("series").FindId(id).One(&series)

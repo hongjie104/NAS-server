@@ -13,7 +13,8 @@ type VideoModel struct {
 	Code       string          `bson:"code,omitempty" json:"code,omitempty"`
 	Name       string          `bson:"name,omitempty" json:"name,omitempty"`
 	Date       *time.Time      `bson:"date,omitempty" json:"date,omitempty"`
-	Downloaded bool            `bson:"hasDownload,omitempty" json:"hasDownload,omitempty"`
+	Subtitle   bool            `bson:"subtitle,omitempty" json:"subtitle,omitempty"` // 有没有字幕
+	HD         bool            `bson:"hd,omitempty" json:"hd,omitempty"`             // 是不是高清的
 	Score      int             `bson:"score,omitempty" json:"score,omitempty"`
 	Actress    []bson.ObjectId `bson:"actress,omitempty" json:"actress,omitempty"`
 	Series     bson.ObjectId   `bson:"series,omitempty" json:"series,omitempty"`
@@ -28,6 +29,7 @@ type VideoIndexOption struct {
 	PageSize  int
 	Code      string
 	ActressID string
+	SeriesID  string
 }
 
 // Index 获取影片列表
@@ -43,8 +45,11 @@ func (m *VideoModel) Index(option VideoIndexOption) (videoList []VideoModel, tot
 	if option.Code != "" {
 		condition["code"] = bson.M{"$regex": option.Code, "$options": "$i"}
 	}
+	if option.SeriesID != "" {
+		condition["series"], _ = utils.ToObjectID(option.SeriesID)
+	}
 
-	selector := bson.M{"_id": 1, "name": 1, "code": 1, "date": 1, "img_s": 1}
+	selector := bson.M{"_id": 1, "name": 1, "code": 1, "date": 1, "img_s": 1, "subtitle": 1, "hd": 1}
 
 	q := ds.C("video").Find(condition).Select(selector)
 	total, _ = q.Count()

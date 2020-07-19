@@ -8,10 +8,10 @@ server:
   read_timeout: 60
   write_timeout: 60
   # 每5秒同步一次数据到数据库
-  save_internal: 5
+  # save_internal: 5
 
 database:
-  type: mongo
+  # type: mongo
   # host: 118.31.64.23:27017
   host: 127.0.0.1:27017
   db: NAS
