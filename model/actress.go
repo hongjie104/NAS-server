@@ -73,8 +73,8 @@ func (m *ActressModel) Show(id string) (actress ActressModel) {
 	return
 }
 
-// ShowMany ShowMany
-func (m *ActressModel) ShowMany(idList []bson.ObjectId) (actress []ActressModel) {
+// ShowByIDList ShowByIDList
+func (m *ActressModel) ShowByIDList(idList []bson.ObjectId) (actress []ActressModel) {
 	if idList == nil || len(idList) < 1 {
 		return
 	}
@@ -90,4 +90,12 @@ func (m *ActressModel) Update(id string, data interface{}) {
 	ds := NewSessionStore()
 	defer ds.Close()
 	ds.C("actress").UpdateId(_id, data)
+}
+
+// ShowMany show many
+func (m *ActressModel) ShowMany(query, selector bson.M) (list []VideoModel) {
+	ds := NewSessionStore()
+	defer ds.Close()
+	ds.C("actress").Find(query).Select(selector).All(&list)
+	return
 }

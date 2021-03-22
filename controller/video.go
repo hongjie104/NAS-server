@@ -43,7 +43,7 @@ func (ctl *VideoController) Show(c *gin.Context) {
 	detail := model.VideoModelInstance.Show(id)
 	series := model.SeriesModelInstance.Show(detail.Series)
 	categoryArr := model.CategoryModelInstance.ShowMany(detail.Category)
-	actress := model.ActressModelInstance.ShowMany(detail.Actress)
+	actress := model.ActressModelInstance.ShowByIDList(detail.Actress)
 	response := response.Gin{C: c}
 	response.Success(gin.H{
 		"video":       detail,

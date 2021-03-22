@@ -77,3 +77,11 @@ func (m *VideoModel) Update(id string, data interface{}) {
 	defer ds.Close()
 	ds.C("video").UpdateId(_id, data)
 }
+
+// ShowMany show many
+func (m *VideoModel) ShowMany(query, selector bson.M)(list []VideoModel) {
+	ds := NewSessionStore()
+	defer ds.Close()
+	ds.C("video").Find(query).Select(selector).All(&list)
+	return
+}

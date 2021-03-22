@@ -38,8 +38,7 @@ func (ctl *UserController) Login(c *gin.Context) {
 	response := response.Gin{C: c}
 	var loginData LoginData
 	if err := c.BindJSON(&loginData); err == nil {
-		var uModel model.UserModel
-		uModel = model.UserModelInstance.Login(loginData.User)
+		uModel := model.UserModelInstance.Login(loginData.User)
 		if uModel.Password == "" {
 			response.Fail(errors.New("用户名错误"))
 			return

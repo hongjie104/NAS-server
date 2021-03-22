@@ -8,5 +8,5 @@ import (
 // Test Test
 func Test(c *gin.Context) {
 	response := response.Gin{C: c}
-	response.Success("this is a test!")
+	response.Success("this is a test")
 }
