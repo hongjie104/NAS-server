@@ -28,6 +28,7 @@ type VideoIndexOption struct {
 	Page      int
 	PageSize  int
 	Code      string
+	SortBy    string
 	ActressID string
 	SeriesID  string
 }
@@ -49,7 +50,13 @@ func (m *VideoModel) Index(option VideoIndexOption) (videoList []VideoModel, tot
 		condition["series"], _ = utils.ToObjectID(option.SeriesID)
 	}
 
-	selector := bson.M{"_id": 1, "name": 1, "code": 1, "date": 1, "img_s": 1, "subtitle": 1, "hd": 1}
+	sort := "-date"
+	switch option.SortBy {
+	case "score-desc":
+		sort = "-score"
+	}
+
+	selector := bson.M{"_id": 1, "name": 1, "code": 1, "date": 1, "img_s": 1, "subtitle": 1, "hd": 1, "score": 1}
 
 	q := ds.C("video").Find(condition).Select(selector)
 	total, _ = q.Count()
@@ -57,7 +64,11 @@ func (m *VideoModel) Index(option VideoIndexOption) (videoList []VideoModel, tot
 	if option.Page > 0 && option.PageSize > 0 {
 		q = q.Skip((option.Page - 1) * option.PageSize).Limit(option.PageSize)
 	}
-	q.Sort("-date").All(&videoList)
+	if sort == "-date" {
+		q.Sort(sort).All(&videoList)
+	} else {
+		q.Sort(sort, "-date").All(&videoList)
+	}
 	return
 }
 
@@ -79,7 +90,7 @@ func (m *VideoModel) Update(id string, data interface{}) {
 }
 
 // ShowMany show many
-func (m *VideoModel) ShowMany(query, selector bson.M)(list []VideoModel) {
+func (m *VideoModel) ShowMany(query, selector bson.M) (list []VideoModel) {
 	ds := NewSessionStore()
 	defer ds.Close()
 	ds.C("video").Find(query).Select(selector).All(&list)

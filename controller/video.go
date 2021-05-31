@@ -16,6 +16,7 @@ type VideoController struct{}
 // Index Index
 func (ctl *VideoController) Index(c *gin.Context) {
 	code := c.DefaultQuery("code", "")
+	sortBy := c.DefaultQuery("sortBy", "")
 	actressID := c.DefaultQuery("actressId", "")
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
@@ -24,6 +25,7 @@ func (ctl *VideoController) Index(c *gin.Context) {
 		Page:      page,
 		PageSize:  pageSize,
 		Code:      code,
+		SortBy:    sortBy,
 		ActressID: actressID,
 		SeriesID:  seriesID,
 	}
